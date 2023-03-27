@@ -1,5 +1,5 @@
 // 将此设置为您的开发板屏幕上显示的数字。
-let boardURL = "https://5f07-158-223-166-66.eu.ngrok.io";
+let boardURL = "https://5f07-158-223-166-66.eu.ngrok.io/";
 
 function setup() {
 createCanvas(400, 400);
