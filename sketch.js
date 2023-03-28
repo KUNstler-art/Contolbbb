@@ -67,12 +67,12 @@ function servo0() {
 }
 
 function servo180() {
-  sendRequest("https://" + boardURL + "/servo?pos=180");
+  sendRequest(boardURL + "/servo?pos=180");
 }
 
 function ledON15s() {
-  sendRequest("https://" + boardURL + "/ledOn");
+  sendRequest(boardURL + "/ledOn");
   setTimeout(function () {
-    sendRequest("https://" + boardURL + "/ledOff");
+    sendRequest( boardURL + "/ledOff");
   }, 15000);
 }
