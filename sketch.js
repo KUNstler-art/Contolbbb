@@ -55,15 +55,15 @@ function sendRequest(url) {
 
 
 function ledON() {
-  sendRequest("https://" + boardURL + "/ledOn");
+  sendRequest(boardURL + "/ledOn");
 }
 
 function ledOFF() {
-  sendRequest("https://" + boardURL + "/ledOff");
+  sendRequest( boardURL + "/ledOff");
 }
 
 function servo0() {
-  sendRequest("https://" + boardURL + "/servo?pos=0");
+  sendRequest( boardURL + "/servo?pos=0"); 
 }
 
 function servo180() {
