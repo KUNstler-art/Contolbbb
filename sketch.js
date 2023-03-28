@@ -55,24 +55,24 @@ function sendRequest(url) {
 
 
 function ledON() {
-  sendRequest(boardURL + "/ledOn");
+  sendRequest("https://" + boardURL + "/ledOn");
 }
 
 function ledOFF() {
-  sendRequest( boardURL + "/ledOff");
+  sendRequest("https://" + boardURL + "/ledOff");
 }
 
 function servo0() {
-  sendRequest( boardURL + "/servo?pos=0"); 
+  sendRequest("https://" + boardURL + "/servo?pos=0");
 }
 
 function servo180() {
-  sendRequest(boardURL + "/servo?pos=180");
+  sendRequest("https://" + boardURL + "/servo?pos=180");
 }
 
 function ledON15s() {
-  sendRequest(boardURL + "/ledOn");
+  sendRequest("https://" + boardURL + "/ledOn");
   setTimeout(function () {
-    sendRequest( boardURL + "/ledOff");
+    sendRequest("https://" + boardURL + "/ledOff");
   }, 15000);
 }
