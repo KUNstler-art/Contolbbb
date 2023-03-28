@@ -1,73 +1,78 @@
-// 将此设置为您的开发板屏幕上显示的数字。
-let boardURL = "https://4630-158-223-166-66.eu.ngrok.io";
+let boardURL = "b4f8-148-252-133-208.eu.ngrok.io";
+let lastRequestedURL = '';
 
 function setup() {
-createCanvas(400, 400);
-
-// 创建您将使用的所有按钮
-ledONbutton = createButton("LEDON");
-// 设置按下时将运行的功能
-ledONbutton.mousePressed(ledON);
-// 设置它的位置
-ledONbutton.position(0, 0);
-
-// 对其他按钮执行相同操作
-ledOFFbutton = createButton("LEDOFF");
-ledOFFbutton.mousePressed(ledOFF);
-ledOFFbutton.position(0, 25);
-
-ledONbutton = createButton("Servo 0 ");
-ledONbutton.mousePressed(servo0);
-ledONbutton.position(0, 50);
-
-ledOFFbutton = createButton("Servo 180 ");
-ledOFFbutton.mousePressed(servo180);
-ledOFFbutton.position(0, 75);
-
-  // 添加新按钮，用于使LED保持打开15秒钟
-  ledON15sButton = createButton("LED ON 15s");
-  ledON15sButton.mousePressed(ledON15s);
-  ledON15sButton.position(0, 100);
+  createCanvas(400, 400);
+  createButtons();
 }
-
 
 function draw() {
-background(255);
+  displayLastRequestedURL();
 }
 
-// 打开LED的按钮
+function createButtons() {
+  const buttonConfig = [
+    { label: "LEDON", action: ledON, y: 0 },
+    { label: "LEDOFF", action: ledOFF, y: 25 },
+    { label: "Servo 0", action: servo0, y: 50 },
+    { label: "Servo 180", action: servo180, y: 75 },
+    { label: "LED ON 15s", action: ledON15s, y: 100 },
+  ];
+
+  buttonConfig.forEach((config) => {
+    const button = createButton(config.label);
+    button.mousePressed(config.action);
+    button.position(0, config.y);
+  });
+}
+
+function displayLastRequestedURL() {
+  background(255);
+  textSize(12);
+  text("Last Requested URL: " + lastRequestedURL, 10, height - 10);
+}
+function sendRequest(url) {
+  lastRequestedURL = url;
+
+  url += (url.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
+
+  fetch(url, {
+    mode: 'no-cors',
+    headers: {
+      'ngrok-skip-browser-warning': '1', // 添加请求头
+    },
+  })
+    .then((response) => {
+      if (response.type === 'opaque') {
+        console.log('Request sent successfully');
+      } else {
+        throw new Error('Network response was not ok');
+      }
+    })
+    .catch((error) => console.error('Error:', error));
+}
+
+
+
 function ledON() {
-// 这是发送给Pico的HTTP请求
-httpGet("http://" + boardURL + "/ledOn", function (response) {
-// 现在我们只记录响应，但如果我们要求一些特定信息，我们可以在这里对其执行其他操作。
-console.log(response);
-});
+  sendRequest("https://" + boardURL + "/ledOn");
 }
 
 function ledOFF() {
-httpGet("http://" + boardURL + "/ledOff", function (response) {
-console.log(response);
-});
-}
-function servo0() {
-httpGet("http://" + boardURL + "/servo?pos=0", function (response) {
-console.log(response);
-});
-}
-function servo180() {
-httpGet("http://" + boardURL + "/servo?pos=180", function (response) {
-console.log(response);
-});
+  sendRequest("https://" + boardURL + "/ledOff");
 }
 
-// 保持LED打开15秒的按钮
+function servo0() {
+  sendRequest("https://" + boardURL + "/servo?pos=0");
+}
+
+function servo180() {
+  sendRequest("https://" + boardURL + "/servo?pos=180");
+}
+
 function ledON15s() {
-  httpGet("http://" + boardURL + "/ledOn", function (response) {
-    console.log(response);
-  });
+  sendRequest("https://" + boardURL + "/ledOn");
   setTimeout(function () {
-    httpGet("http://" + boardURL + "/ledOff", function (response) {
-      console.log(response);
-    });
-  }, 15000); // 15000毫秒 = 15秒
+    sendRequest("https://" + boardURL + "/ledOff");
+  }, 15000);
 }
