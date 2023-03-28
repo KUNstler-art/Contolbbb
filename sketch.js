@@ -1,4 +1,4 @@
-let boardURL = "b4f8-148-252-133-208.eu.ngrok.io";
+let boardURL = "5f1f-85-255-233-227.eu.ngrok.io";
 let lastRequestedURL = '';
 
 function setup() {
